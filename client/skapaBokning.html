@@ -1,0 +1,112 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+<style>
+table, th, td {
+    border: 1px solid black;
+}
+th {
+    text-align: left;
+}
+</style>
+</head>
+<body>
+
+
+<p style="text-align:left;">
+Bokningssystem <a href="Bokningar.html">Bokningar</a> <a href="index.html">Kommande Körningar</a>
+<span style="float:right;"><a href="skapaBokning.html"><b>Skapa ny bokning</b></a></span>
+</p>
+
+<!--Form for entering information about a new customer-->
+
+<script>
+
+function validateForm(){
+	console.log(errors);
+	if (errors) {
+		var error = document.getElementById("errmsg");
+		error = "Fyll i samtliga obligatoriska fält";
+	}
+	}
+	
+</script>
+
+<form name="frm1" method="post" action="customers/add" style="text-align:left;">
+
+  Butikens ordernummer: <span style="float:right;"> Lägg till produkter* </span> <br>
+  <input type="text" name="ordnr"> <span style="float:right;"> <input type="text" name="prods"> </span><br>
+  Kundens namn*: <span style="float:right;"> Datum* </span><br>
+  <input type="text" name="knamn"> <span style="float:right;"> <input type="text" name="datum"> </span><br>
+  Kundens e-postadress: <span style="float:right;"> Fast tid </span><br>
+  <input type="text" name="epost"> <span style="float:right;"> <input type="text" name="fasttid"> </span><br>
+  Adress*: <span style="float:right;"> Tid* </span><br>
+  <input type="text" name="adress"> <span style="float:right;"> <input type="text" name="tid"> </span><br>
+  Postnummer*:<br> <input type="text" name="postnr"><br>
+  Ort*:<br> <input type="text" name="ort"><br>
+  Telefonnummer*:<br> <input type="text" name="telnr"><br>
+  Extra män:<br> <input type="text" name="extra"><br>
+  Övrig information:<br> <input type="text" name="ovrinfo"><br>
+  *Obligatoriska fält<br>
+  <input type="submit" value="Skapa bokning">
+</form>
+
+<p id="output"></p>
+
+<p id="errmsg"></p>
+
+<script>
+/*
+function myFunction() {
+    var x = document.getElementById("frm1");
+    var text = "";
+    var i;
+    for (i = 0; i < x.length ;i++) {
+        text += x.elements[i].value + "<br>";
+    }
+    document.getElementById("output").innerHTML = text;
+}
+*/
+/*
+function myFunction(){
+    var x = document.getElementById("frm1");
+    var text = {
+		ordernummer: "",
+		namn: "",
+		epost: "",
+	};
+    var i;
+    
+    text.ordernummer= x.elements[0].value;
+	text.namn= x.elements[1].value;
+	text.epost= x.elements[2].value;
+	
+	text = JSON.stringify(text);
+	
+	var fs = require('fs');
+	fs.writeFile('nyabokningar.json', text, 'utf8', callback);
+		
+	
+	document.getElementById("output").innerHTML = text;
+	
+	}
+
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+		
+    }
+	};
+xhttp.open("GET", "nyabokningar.json", true);
+xhttp.send();
+*/
+//	document.getElementById("output").innerHTML = text;
+//	console.log(text);
+
+</script>
+
+
+
+</body>
+</html>

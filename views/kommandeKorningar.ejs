@@ -1,0 +1,95 @@
+<% include partials/header %>
+
+
+<ul class="nav">
+<li>Bokningssystem </li>
+<li><a href="kommandeKorningar"><b>Kommande Körningar</b></a> </li>
+<li><a href="index">Bokningar</a> </li>
+<li><a href="skapaBokning">Skapa ny bokning</a> </li>
+<li><form name="searchfunc" id="mainSearch" method="POST" action="/search">
+	<input id="search" name="search" type="text">
+	<input type="submit" value="Sök"> </form>
+</ul>
+
+<span style="float:right;"><a href='/users/logout'>Logga ut</a></span><br>
+
+<span style="float:right;"><a href='/users/logout'>Logga ut</a></span><br>
+
+<form action = "/newWeekDecr" method = "post" >
+	<input type="hidden" value="<%= week - 1%>" name="vecka" />
+	<input type="hidden" value="<%= year%>" name="ar" />
+    <input type="submit" name="down" value="Föregående Vecka" />
+</form> Vecka <%= week%> <form action = "/newWeekIncr" method = "post">
+	<input type="hidden" value="<%= week - -1%>" name="vecka" />
+	<input type="hidden" value="<%= year%>" name="ar" />
+    <input type="submit" name="down" value="Nästa Vecka" />
+</form>
+
+
+<div id="nya" display: block>
+<table class="tg" id="kommandeKorningarTabell">
+	<tr>
+		<th class="tg-yw41">&#10004</th>
+		<th class="tg-yw41">Datum</th>
+		<th class="tg-yw41">Tid</th> 
+		<th class="tg-yw41">Veckodag</th>
+		<th class="tg-yw41">Ordernummer</th>
+		<th class="tg-yw41">Namn</th>
+		<th class="tg-yw41">Adress</th>
+		<th class="tg-yw41">Postnummer</th>
+		<th class="tg-yw41">Telefonnummer</th>
+		<th class="tg-yw41"></th>
+	</tr>
+	<% var stripe = "tg-b7b8" %>
+	<% customers.forEach(function(customer){ %>
+	<%if(customer.vecka==week){%>
+	<tr>
+		<td class=<%=stripe%>><% if(customer.avklarad == "ja"){ %>
+		&#10004
+		<%} %></td>
+		<td class=<%=stripe%>><%= customer.datum %></td>
+		<td class=<%=stripe%>><%= customer.tid %></td>
+		<td class=<%=stripe%>><%= customer.veckodag %></td>
+		<td class=<%=stripe%>><%= customer.ordernummer %></td>
+		<td class=<%=stripe%>><%= customer.namn %></td>
+		<td class=<%=stripe%>><%= customer.adress %></td>
+		<td class=<%=stripe%>><%= customer.postnummer %></td>
+		<td class=<%=stripe%>><%= customer.telefonnummer %></td>
+		<td class=<%=stripe%>><!--<%= customer._id %>-->
+		<% var xxx=customer._id %>
+		<form action = "/deleteEntry?id=<%=xxx%>" method = "post">
+    <input type="submit" name="down" value="Ta bort" />
+</form><form action = "/markComplete?id=<%=xxx%>" method = "post">
+    <input type="submit" name="down" value="Markera avklarad" />
+</form><form action = "/markBooked?id=<%=xxx%>" method = "post">
+    <input type="submit" name="down" value="Markera inbokad" />
+</form><form action = "/showBooking?id=<%=xxx%>" method = "post">
+    <input type="submit" name="down" value="Visa Bokning" />
+</form></td>
+	</tr>
+		<%if (stripe == "tg-b7b8"){ %>
+		<% stripe = "tg-yzt1" %>
+		<% }else { %>
+		<% stripe = "tg-b7b8" %>
+		<%}%>
+	<%}%>
+	<% }) %>  
+</table>
+</div>
+
+<script> // Function related to buttons, determines what info is shown
+function veckonr(sw) {
+    if (sw == 0) {
+    } else{
+    }
+}
+</script>
+
+<script>
+Date.prototype.getWeek = function() {
+    var onejan = new Date(this.getFullYear(),0,1);
+    return Math.ceil((((this - onejan) / 86400000) + onejan.getDay()+1)/7);
+} 
+</script>
+
+<% include partials/footer %>

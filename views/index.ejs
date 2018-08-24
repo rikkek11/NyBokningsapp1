@@ -1,0 +1,235 @@
+<% include partials/header %>
+
+
+<ul class="nav">
+<li>Bokningssystem </li>
+<li><a href="kommandeKorningar">Kommande Körningar</a> </li>
+<li><a href="index"><b>Bokningar</b></a> </li>
+<li><a href="skapaBokning">Skapa ny bokning</a> </li>
+<li><form name="searchfunc" id="mainSearch" method="POST" action="/search">
+	<input id="search" name="search" type="text">
+	<input type="submit" value="Sök"></form>
+</ul>
+
+<span style="float:right;"><a href='/users/logout'>Logga ut</a></span><br>
+
+<p> <!--Buttons "Nya Bokningar", "Pågående Bokningar", "Genomförda Bokningar" -->
+<button type="button" onclick="myFunction(0)">Nya bokningar</button>
+<button type="button" onclick="myFunction(1)">Pågående bokningar</button>
+<button type="button" onclick="myFunction(2)">Genomförda bokningar</button>
+</p>
+
+<div id="nya" display: block>
+<table class="tg" id="nyaBokningarTabell">
+	<tr>
+		<th class="tg-yw41">Datum</th>
+		<th class="tg-yw41">Tid</th> 
+		<th class="tg-yw41">Veckodag</th>
+		<th class="tg-yw41">Ordernummer</th>
+		<th class="tg-yw41">Namn</th>
+		<th class="tg-yw41">Adress</th>
+		<th class="tg-yw41">Postnummer</th>
+		<th class="tg-yw41">Telefonnummer</th>
+
+	</tr>
+	<% var stripe = "tg-b7b8" %>
+	<% customers.forEach(function(customer){ %>
+	<%if(customer.inbokad == "nej" && customer.avklarad == "nej"){%>
+	<tr>
+		<td class=<%=stripe%>><%= customer.datum %></td>
+		<td class=<%=stripe%>><%= customer.tid %></td>
+		<td class=<%=stripe%>><%= customer.veckodag %></td>
+		<td class=<%=stripe%>><%= customer.ordernummer %></td>
+		<td class=<%=stripe%>><%= customer.namn %></td>
+		<td class=<%=stripe%>><%= customer.adress %></td>
+		<td class=<%=stripe%>><%= customer.postnummer %></td>
+		<td class=<%=stripe%>><%= customer.telefonnummer %></td>
+	<td class=<%=stripe%>><!--<%= customer._id %>-->
+		<% var xxx=customer._id %>
+	<form action = "/showBooking?id=<%=xxx%>" method = "post">
+    <input type="submit" name="down" value="Visa Bokning" />
+</form></td>
+		<%if (stripe == "tg-b7b8"){ %>
+		<% stripe = "tg-yzt1" %>
+		<% }else { %>
+		<% stripe = "tg-b7b8" %>
+		<%}%>
+	</tr>
+	<%}%>
+	<% }) %>   
+</table>
+</div>
+
+
+
+<div id="pagaende" style="display: none;">
+
+	
+<table class="tg" id="pagaendeBokningarTabell">
+	<tr>
+		<th class="tg-yw41">Datum</th>
+		<th class="tg-yw41">Tid</th> 
+		<th class="tg-yw41">Veckodag</th>
+		<th class="tg-yw41">Ordernummer</th>
+		<th class="tg-yw41">Namn</th>
+		<th class="tg-yw41">Adress</th>
+		<th class="tg-yw41">Postnummer</th>
+		<th class="tg-yw41">Telefonnummer</th>
+	</tr>
+	<% var stripe = "tg-b7b8" %>
+	<% customers.forEach(function(customer){ %>
+	<%if(customer.avklarad != "ja"){%>
+	<tr>
+		<td class=<%=stripe%>><%= customer.datum %></td>
+		<td class=<%=stripe%>><%= customer.tid %></td>
+		<td class=<%=stripe%>><%= customer.veckodag %></td>
+		<td class=<%=stripe%>><%= customer.ordernummer %></td>
+		<td class=<%=stripe%>><%= customer.namn %></td>
+		<td class=<%=stripe%>><%= customer.adress %></td>
+		<td class=<%=stripe%>><%= customer.postnummer %></td>
+		<td class=<%=stripe%>><%= customer.telefonnummer %></td>
+	<td class=<%=stripe%>><!--<%= customer._id %>-->
+		<% var xxx=customer._id %>
+	<form action = "/showBooking?id=<%=xxx%>" method = "post">
+    <input type="submit" name="down" value="Visa Bokning" />
+</form></td>
+		<%if (stripe == "tg-b7b8"){ %>
+		<% stripe = "tg-yzt1" %>
+		<% }else { %>
+		<% stripe = "tg-b7b8" %>
+		<%}%>
+	</tr>
+	<%}%>
+	<% }) %> 
+	</table>
+	
+
+</div>	
+<!-- gammal kod
+	<tr>
+		<th class="tg-yw41">Datum</th>
+		<th class="tg-yw41">Tid</th> 
+		<th class="tg-yw41">Veckodag</th>
+		<th class="tg-yw41">Ordernummer</th>
+		<th class="tg-yw41">Namn</th>
+		<th class="tg-yw41">Adress</th>
+		<th class="tg-yw41">Postnummer</th>
+		<th class="tg-yw41">Telefonnummer</th>
+	</tr>
+	<% var orderedcustomers = customers; %>
+	<% orderedcustomers.sort(function(a,b) { %>
+	<% var dateA = new Date(a.datum), dateB = new Date(b.datum); %>
+	<% return dateA - dateB; %>
+	<% }); %>
+	<% today = new Date(); %>
+	<% month = today.getMonth()+1; %>
+	<% if (month<10){ %>
+		<% if (today.getMonth()<10){ %>
+			<% today = today.getFullYear() + '-' + 0 + month + '-' + 0+ today.getDate(); %>
+		<% } else { %>
+			<% today = today.getFullYear() + '-' + 0 + month + '-' + today.getDate(); %>
+		<% } %>
+	<% } else { %>
+		<% if (today.getMonth()<10){ %>
+			<% today = today.getFullYear() + '-' + month + '-' + 0+ today.getDate(); %>
+		<% } else { %>
+			<% today = today.getFullYear() + '-' + month + '-' + today.getDate(); %>
+		<% } %>
+	<% } %>
+
+	<% for(var i = 0; i<orderedcustomers.length; i++){ %>
+		<% if(orderedcustomers[i].datum<today){ %>
+			<% delete orderedcustomers[i]; %>
+		<% } %>
+	<% } %>
+	<% orderedcustomers.forEach(function(customer){ %>
+	<tr>
+		<td class=<%=stripe%>><%= customer.datum %></td>
+		<td class=<%=stripe%>><%= customer.tid %></td>
+		<td class=<%=stripe%>><%= customer.veckodag %></td>
+		<td class=<%=stripe%>><%= customer.ordernummer %></td>
+		<td class=<%=stripe%>><%= customer.namn %></td>
+		<td class=<%=stripe%>><%= customer.adress %></td>
+		<td class=<%=stripe%>><%= customer.postnummer %></td>
+		<td class=<%=stripe%>><%= customer.telefonnummer %></td>
+	</tr>
+	<% }) %>  	
+	</table>
+	
+
+</div>	
+-->
+
+
+<div id="genomforda" style="display: none;">
+<table class="tg" id="genomfordaBokningarTabell">
+	<tr>
+		<th class="tg-yw41">Datum</th>
+		<th class="tg-yw41">Tid</th> 
+		<th class="tg-yw41">Veckodag</th>
+		<th class="tg-yw41">Ordernummer</th>
+		<th class="tg-yw41">Namn</th>
+		<th class="tg-yw41">Adress</th>
+		<th class="tg-yw41">Postnummer</th>
+		<th class="tg-yw41">Telefonnummer</th>
+	</tr>
+	<% var stripe = "tg-b7b8" %>
+	<% customers.forEach(function(customer){ %>
+	<%if(customer.avklarad == "ja"){%>
+	<tr>
+		<td class=<%=stripe%>><%= customer.datum %></td>
+		<td class=<%=stripe%>><%= customer.tid %></td>
+		<td class=<%=stripe%>><%= customer.veckodag %></td>
+		<td class=<%=stripe%>><%= customer.ordernummer %></td>
+		<td class=<%=stripe%>><%= customer.namn %></td>
+		<td class=<%=stripe%>><%= customer.adress %></td>
+		<td class=<%=stripe%>><%= customer.postnummer %></td>
+		<td class=<%=stripe%>><%= customer.telefonnummer %></td>
+	<td class=<%=stripe%>><!--<%= customer._id %>-->
+		<% var xxx=customer._id %>
+	<form action = "/showBooking?id=<%=xxx%>" method = "post">
+    <input type="submit" name="down" value="Visa Bokning" />
+</form></td>
+		</form></td>
+		<%if (stripe == "tg-b7b8"){ %>
+		<% stripe = "tg-yzt1" %>
+		<% }else { %>
+		<% stripe = "tg-b7b8" %>
+		<%}%>
+	</tr>
+	<%}%>
+	<% }) %>  
+</table>
+</div>
+
+<script> // Function related to buttons, determines what info is shown
+function myFunction(sw) {
+    var x = document.getElementById("nya");
+    var y = document.getElementById("pagaende");
+    var z = document.getElementById("genomforda");
+    y.style.display = "none";
+    z.style.display = "none";
+    if (sw == 0) {
+        x.style.display = "block";
+        y.style.display = "none";
+        z.style.display = "none";
+    } else if (sw == 1){
+        x.style.display = "none";
+        y.style.display = "block";
+        z.style.display = "none";
+    }
+    else if (sw == 2){
+    	x.style.display = "none";
+        y.style.display = "none";
+        z.style.display = "block";
+   }
+   else {
+		x.style.display = "none";
+        y.style.display = "none";
+        z.style.display = "none";
+	}
+}
+</script>
+
+
+<% include partials/footer %>

@@ -1,0 +1,141 @@
+﻿<!doctype html>
+<html>
+<script type="text/javascript" src="pagaende.json"></script>
+<head>
+<title>Bokningar</title>
+</head>
+<style>
+table, th, td {
+    border: 1px solid black;
+}
+th {
+    text-align: left;
+}
+</style>
+<body onpageshow="myFunction(0)">
+
+<p style="text-align:left;">
+Bokningssystem <a href="Bokningar.html">Bokningar</a> <a href="index.html"><b>Kommande Körningar</b></a>
+<span style="float:right;"><a href="skapaBokning.html">Skapa ny bokning</a></span>
+</p>
+
+
+<p> <!--Buttons "Nya Bokningar", "Pågående Bokningar", "Genomförda Bokningar" -->
+<button type="button" onclick="myFunction(0)">Nya bokningar</button>
+<button type="button" onclick="myFunction(1)">Pågående bokningar</button>
+<button type="button" onclick="myFunction(2)">Genomförda bokningar</button>
+</p>
+
+
+<div id="nya" display: block> <!--Following 3 div objects contains the elements for which table of customers is shown -->
+Nya Bokningar
+</div>
+
+<div id="pagaende">
+<table id="demo"></table>
+</div>
+
+<div id="genomforda">
+Genomförda Bokningar
+</div>
+
+
+
+
+
+<script> // Function related to buttons, determines what info is shown
+function myFunction(sw) {
+    var x = document.getElementById("nya");
+    var y = document.getElementById("pagaende");
+    var z = document.getElementById("genomforda");
+    y.style.display = "none";
+    z.style.display = "none";
+    if (sw == 0) {
+        x.style.display = "block";
+        y.style.display = "none";
+        z.style.display = "none";
+    } else if (sw == 1){
+        x.style.display = "none";
+        y.style.display = "block";
+        z.style.display = "none";
+    }
+    else if (sw == 2){
+    	x.style.display = "none";
+        y.style.display = "none";
+        z.style.display = "block";
+   }
+   else {
+		x.style.display = "none";
+        y.style.display = "none";
+        z.style.display = "none";
+	}
+}
+</script>
+
+
+<script><!--Script for creating the table of customers-->
+
+	var body = document.getElementById('demo');
+	var body = demo;
+	var item = JSON.parse(data);
+	var tbl = document.createElement("table");
+	var tblBody = document.createElement("tbody");
+	
+
+	
+	
+	//Replace constant loops with the total amount of customers plus 1, fetches all customers in turn
+	for (var i = 0; i < 2; i++){
+	var tr = document.createElement('tr');
+	var td = document.createElement('td');
+	
+	var text = document.createTextNode(item[i].datum);
+	td.appendChild(text);
+	tr.appendChild(td);
+	
+	td = document.createElement('td');
+	text = document.createTextNode(item[i].tid);
+	td.appendChild(text);
+	tr.appendChild(td);
+	
+	td = document.createElement('td');
+	text = document.createTextNode(item[i].Veckodag);
+	td.appendChild(text);
+	tr.appendChild(td);
+	
+	td = document.createElement('td');
+	text = document.createTextNode(item[i].Ordernummer);
+	td.appendChild(text);
+	tr.appendChild(td);
+	
+	td = document.createElement('td');
+	text = document.createTextNode(item[i].namn);
+	td.appendChild(text);
+	tr.appendChild(td);
+	
+	td = document.createElement('td');
+	text = document.createTextNode(item[i].Adress);
+	td.appendChild(text);
+	tr.appendChild(td);
+	
+	td = document.createElement('td');
+	text = document.createTextNode(item[i].Postnummer);
+	td.appendChild(text);
+	tr.appendChild(td);
+	
+	td = document.createElement('td');
+	text = document.createTextNode(item[i].Telefonnummer);
+	td.appendChild(text);
+	tr.appendChild(td);
+	
+	tblBody.appendChild(tr);
+	
+	
+	}
+	tbl.appendChild(tblBody);
+	body.appendChild(tbl);		
+</script>
+
+
+</body>
+</html>

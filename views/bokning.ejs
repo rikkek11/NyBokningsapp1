@@ -1,0 +1,338 @@
+<% include partials/header %>
+
+<ul class="nav">
+<li>Bokningssystem </li>
+<li><a href="kommandeKorningar">Kommande Körningar</a> </li>
+<li><a href="index">Bokningar</a> </li>
+<li><a href="skapaBokning">Skapa ny bokning</a> </li>
+<li><form name="searchfunc" id="mainSearch" method="POST" action="/search">
+	<input id="search" name="search" type="text">
+	<input type="submit" value="Sök"></form>
+</ul>
+
+<span style="float:right;"><a href='/users/logout'>Logga ut</a></span><br>
+
+<div class="form-style-2">
+<form name="frm1" id="mainForm" method="POST" action="/update?id=<%=customer._id%>
+  <div class="two-col">
+    <div class="col1">
+        <label for="ordernummer">Butikens ordernummer:</label>
+        <input id="ordernummer" name="ordernummer" type="text" value=<%=customer.ordernummer%>
+
+		<label for="namn">Kundens namn*:</label>
+        <input id="namn" name="namn" type="text" value=<%= customer.namn %>>
+		<script> console.log(<%= customer.namn %>); </script>
+		<label for="epost">Kundens e-postadress:</label>
+        <input id="epost" name="epost" type="text" value=<%= customer.epost %>>
+		
+		<label for="adress">Adress*:</label>
+        <input id="adress" name="adress" type="text" value=<%= customer.adress %>>
+		
+		<label for="postnummer">Postnummer*:</label>
+        <input id="postnummer" name="postnummer" type="text" value=<%= customer.postnummer %>>
+		
+		<label for="ort">Ort*:</label>
+        <input id="ort" name="ort" type="text" value=<%= customer.ort %>>
+		
+		<label for="telefonnummer">Telefonnummer*:</label>
+        <input id="telefonnummer" name="telefonnummer" type="text" value=<%= customer.telefonnummer %>>
+		
+		<label for="extrakostnad">Extra kostnader?:</label>
+        <input id="extra kostnad" name="extrakostnad" type="text" value=<%= customer.extrakostnad %>>
+		
+		<label for="extra">Extra män:</label>
+        <input id="extra" name="extra" type="text" value=<%= customer.extra %>>
+		
+		<label for="ovrinfo">Övrig information:</label>
+        <textarea rows="5" cols="25" id="ovrinfo" name="ovrinfo" value = <%= customer.ovrinfo %>> </textarea>
+    </div>
+
+	<div class="col2">
+		
+		<div id="produkter">
+        <select name="produkt">
+        <option value=null>Välj produkt</option>
+		<option value="pktkylfrys">Paket kyl & frys</option>
+		<option value="pkttvätttork">Paket tvätt & tork</option>
+		<option value="kylfrys">Kyl/frys</option>
+		<option value="kyl">Kyl</option>
+		<option value="frys">Frys</option>
+		<option value="tvätt">Tvätt</option>
+		<option value="tork">Tork</option>
+		<option value="disk">Disk</option>
+		<option value="integdisk">Integrerad disk</option>
+		<option value="spis">Spis</option>
+		<option value="ugn">Ugn</option>
+		<option value="häll">Häll</option>
+		<option value="micro">Micro</option>
+		<option value="fläktkåpa">Fläkt kåpa</option>
+		<option value="fläktunderbyggnad">Underbyggd fläkt</option>
+		<option value="överskåp">Överskåp</option>
+		<option value="sidebyside">Side-by-side</option>
+		<option value="extra">Extra</option>
+		<option value="integkylfrys">Integrerad kyl & frys (obs! Extra kostnad)</option>
+		<option value="torkskåp">Torkskåp</option>
+		<option value="integkyl">Integrerad kyl (obs! Extra kostnad)</option>
+		<option value="integfrys">Integrerad frys (obs! Extra kostnad)</option>
+		<option value="service">Service av vitvaror</option></select><br>
+		
+		<input type="hidden" value="1" name="antalProdukter" />
+		</div>
+		
+		
+		
+		<button type="button" onclick="addLine()">Lägg till rad</button>
+		
+		<label for="datum">Datum*:</label>
+		<input id="datum" type="date" name="datum">
+
+		
+		<br>
+		<select name="tid">
+		<option value =null>Välj tid</option>
+		<option value = "09-12">09-12</option>
+		<option value = "10-13">10-13</option>
+		<option value = "11-14">11-14</option>
+		<option value = "12-15">12-15</option>
+		<option value = "13-16">13-16</option>
+		<option value = "14-17">14-17</option>
+		<option value = "15-18">15-18</option>
+		</select>
+		<label for="interninfo">Intern info:</label>
+        <textarea rows="5" cols="25" id="interninfo" name="interninfo"> </textarea>
+		
+		<br><br>
+		
+		<input type="submit" value="Uppdatera bokning">
+		
+    </div>
+    
+</div>
+</div>
+<% if(errors != undefined){ %>
+	<%= "Fyll i samtliga obligatoriska fält!" %>
+<% } %>
+  <br>
+  <br>
+  
+</form>
+
+<script>
+	function addLine(){
+		var container = document.getElementById("produkter");
+		var antal = document.getElementById("mainForm").elements.namedItem("antalProdukter");
+		var input = document.createElement("SELECT");
+		antal.value = antal.value - -1;
+		
+		console.log(antal.value);
+		input.name = "produkt"+antal.value;
+		
+		var empty = document.createElement("option");
+		empty.text = "Välj produkt";
+		empty.value = null;
+		input.add(empty);
+		
+		var pktkylfrys = document.createElement("option");
+		pktkylfrys.text = "Paket kyl & frys";
+		pktkylfrys.value = "pktkylfrys";
+		input.add(pktkylfrys);
+		
+		var pkttvatttork = document.createElement("option");
+		pkttvatttork.text = "Paket tvätt & tork";
+		pkttvatttork.value = "pkttvätttork";
+		input.add(pkttvatttork);
+		
+		var kylfrys = document.createElement("option");
+		kylfrys.text = "Kyl/frys";
+		kylfrys.value = "kylfrys";
+		input.add(kylfrys);
+		
+		var kyl = document.createElement("option");
+		kyl.text = "Kyl";
+		kyl.value = "kyl";
+		input.add(kyl);
+		
+		var frys = document.createElement("option");
+		frys.text = "Frys";
+		frys.value = "frys";
+		input.add(frys);
+		
+		var tvatt = document.createElement("option");
+		tvatt.text = "Tvätt";
+		tvatt.value = "tvätt";
+		input.add(tvatt);
+		
+		var tork = document.createElement("option");
+		tork.text = "Tork";
+		tork.value = "tork";
+		input.add(tork);
+		
+		var disk = document.createElement("option");
+		disk.text = "Disk";
+		disk.value = "disk";
+		input.add(disk);
+		
+		var integdisk = document.createElement("option");
+		integdisk.text = "Integrerad disk";
+		integdisk.value = "integdisk";
+		input.add(integdisk);
+		
+		var spis = document.createElement("option");
+		spis.text = "Spis";
+		spis.value = "spis";
+		input.add(spis);
+		
+		var ugn = document.createElement("option");
+		ugn.text = "Ugn";
+		ugn.value = "ugn";
+		input.add(ugn);
+		
+		var hall = document.createElement("option");
+		hall.text = "Häll";
+		hall.value = "häll";
+		input.add(hall);
+		
+		var micro = document.createElement("option");
+		micro.text = "Micro";
+		micro.value = "micro";
+		input.add(micro);
+		
+		var flaktkapa = document.createElement("option");
+		flaktkapa.text = "Fläkt kåpa";
+		flaktkapa.value = "fläktkåpa";
+		input.add(flaktkapa);
+		
+		var flaktunderbyggnad = document.createElement("option");
+		flaktunderbyggnad.text = "Underbyggd fläkt";
+		flaktunderbyggnad.value = "fläktunderbyggnad";
+		input.add(flaktunderbyggnad);
+		
+		var overskap = document.createElement("option");
+		overskap.text = "Överskåp";
+		overskap.value = "överskåp";
+		input.add(overskap);
+		
+		var sidebyside = document.createElement("option");
+		sidebyside.text = "Side-by-side";
+		sidebyside.value = "sidebyside";
+		input.add(sidebyside);
+		
+		var extra = document.createElement("option");
+		extra.text = "Extra";
+		extra.value = "extra";
+		input.add(extra);
+		
+		var integkylfrys = document.createElement("option");
+		integkylfrys.text = "Integrerad kyl & frys (obs! Extra kostnad)";
+		integkylfrys.value = "integkylfrys";
+		input.add(integkylfrys);
+		
+		var torkskap = document.createElement("option");
+		torkskap.text = "Torkskåp";
+		torkskap.value = "torkskåp";
+		input.add(torkskap);
+		
+		var integkyl = document.createElement("option");
+		integkyl.text = "Integrerad kyl (obs! Extra kostnad)";
+		integkyl.value = "integkyl";
+		input.add(integkyl);
+		
+		var integfrys = document.createElement("option");
+		integfrys.text = "Integrerad frys (obs! Extra kostnad)";
+		integfrys.value = "integfrys";
+		input.add(integfrys);
+		
+		var service = document.createElement("option");
+		service.text = "Service av vitvaror";
+		service.value = "service";
+		input.add(service);
+		
+		container.appendChild(input);
+		container.appendChild(document.createElement("br"));
+	}
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Gammal kod
+
+<form name="frm1" method="POST" action="/update?id=<%=customer._id%>" style="text-align:left;">
+  Butikens ordernummer:										<span style="float:right;">  <select name="produkt">
+															<option value=null>Välj produkt</option>
+															<option value="pktkylfrys">Paket kyl & frys</option>
+															<option value="tvätt">Tvätt</option>
+															</select></span><br>
+  <input type="text" name="ordernummer" value=<%=customer.ordernummer%>><br>					
+  Kundens namn*:											<span style="float:right;"> Datum* </span><br>				
+  <input type="text" name="namn" value=<%=customer.namn%>>	 						<span style="float:right;"> <input type="date" name="datum" value=<%=customer.datum%>> </span><br>
+  Kundens e-postadress:										<span style="float:right;"> <input type="checkbox" name="fasttid" value="<%customer.fasttid%>">Fast tid</span><br>					
+  <input type="text" name="epost" value=<%=customer.epost%>><br>
+  Adress*:													<span style="float:right;"> Tid* </span><br>					
+  <input type="text" name="adress" value=<%=customer.adress%>>							<span style="float:right;"> <input type="text" name="tid" value=<%=customer.tid%>> </span><br>
+  Postnummer*:<br> <input type="text" name="postnummer" value=<%=customer.postnummer%>><br>
+  Ort*:<br> <input type="text" name="ort" value=<%=customer.ort%>><br>
+  Telefonnummer*:<br> <input type="text" name="telefonnummer" value=<%=customer.telefonnummer%>><br>
+  Extra män:<br> <input type="text" name="extra" value=<%=customer.extra%>><br>
+  Övrig information:<br> <input type="text" name="ovrinfo" value=<%=customer.ovrinfo%>><br>
+  <input type="hidden" value="<%=customer.avklarad%>" name="avklarad" />
+  <input type="hidden" value="<%=customer.inbokad%>" name="inbokad" />
+  *Obligatoriska fält<br>
+  
+  <% if(errors != undefined){ %>
+	<%= "Fyll i samtliga obligatoriska fält!" %>
+<% } %>
+  <br>
+  <br>
+  <input type="submit" value="Uppdatera bokning">
+</form>
+
+-->
+
+<% include partials/footer %>
